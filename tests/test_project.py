@@ -22,4 +22,3 @@ def test_project_expected3(r):
     r = r.project(["lastName"])
     r_expected_2 = Relation("tests/test_project_expected3.csv", sep="|")
     assert r.equals(r_expected_2)
-

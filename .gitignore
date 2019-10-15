@@ -63,5 +63,6 @@ target/
 # IDE cruft
 .vscode
 .idea
+.DS_Store
 
 # Created by .ignore support plugin (hsz.mobi)
