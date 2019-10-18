@@ -1,4 +1,3 @@
-id | firstName | lastName | age | street| city | state
-0 | Alice | Smith | 86 | 102 Day St | Atlanta | GA
-1 | Bob | Johnson | 4 | 5401 95th Ave | Des Moines | IA
-2 | Carol | Williams | 37 | 810 Mulberry Ln | Eden Prairie | MN
+id|firstName|lastName|city|state
+0|Alice|Smith|Atlanta|GA
+1|Bob|Johnson|Des Moines|IA
