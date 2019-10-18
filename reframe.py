@@ -29,7 +29,7 @@ class Relation(pd.DataFrame):
             super().__init__(filepath)
         else:
             print('help')
-            
+
     def project(self, cols):
         """returns a new Relation with only the specified columns
 
@@ -62,7 +62,7 @@ class Relation(pd.DataFrame):
             if name not in self.columns:
                 raise ValueError("'{}' is not a valid attribute name in relation".format(name))
         return Relation(self[cols].drop_duplicates())
-    
+
     def query(self, q):
         """return a new relation with tuples matching the query condition
 
@@ -149,6 +149,40 @@ class Relation(pd.DataFrame):
             raise ValueError("Relations must be Union compatible")
         else:
             return Relation(pd.merge(self,other,how='inner',on=list(self.columns)))
+
+    def join(self, other, left_col=None, right_col=None):
+        """Create a new relation that joins two given relations so that
+        the records of one are added onto the other wherever
+        the values of a specified common column in each relation are equal to each other.
+
+        :param left_col: name of common column in self.
+        :param right_col: name of common column in other.
+        :return:
+
+        :Example:
+        >>> from reframe import Relation
+        >>> country = Relation('country.csv')
+        >>> country_has_trump = Relation('country_has_trump.csv')
+        >>> country.query('region == "North America"').join(country_has_trump, left_col='code', right_col='code').project(['name','region', 'has_trump_as_president'])
+                                name         region  has_trump_as_president
+        0                    Bermuda  North America                   False
+        1                  Greenland  North America                   False
+        2                     Canada  North America                   False
+        3  Saint Pierre and Miquelon  North America                   False
+        4              United States  North America                    True
+        """
+
+
+        if not left_col or not right_col:
+            raise ValueError("Relations mush have a common column")
+        else:
+            if left_col in self.columns:
+                if right_col in other.columns:
+                    return Relation(pd.merge(self, other, left_on=left_col, right_on=right_col))
+                else:
+                    raise ValueError("Column does not exist: " + left_col)
+            else:
+                raise ValueError("Column does not exist: " + right_col)
 
     def njoin(self, other):
         """Create a new relation that is the intersection of the two given relations
